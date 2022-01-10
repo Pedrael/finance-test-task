@@ -1,6 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 
+import React from 'react';
+import Ticker from './ticker/Ticker';
+import makeShit from './store/index';
+
 function App() {
   return (
     <div className="App">
@@ -18,6 +22,8 @@ function App() {
           Learn React
         </a>
       </header>
+      <Ticker name = {"Pedrael"}/>
+      {makeShit()}
     </div>
   );
 }
