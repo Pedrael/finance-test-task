@@ -1,19 +1,45 @@
 // here will be Redux store...
 
-import { io } from "socket.io-client";
+import {createStore, applyMiddleware, compose} from "redux";
+import {composeWithDevTools} from "redux-devtools-extension";
+import createSagaMiddleware from "redux-saga";
+import {addManyTickersWatcher} from "../asyncActions/index";
 
-const makeShit = () => {
+const sagaMiddleware = createSagaMiddleware();
 
-    const socket = io("http://localhost:4000/");
+const defaultState = {
+  tickers: []
+}
 
-    socket.emit("start", () => {});
+const ADD_TICKER = "ADD_TICKER";
+const ADD_MANY_TICKERS = "ADD_MANY_TICKERS";
+const REMOVE_TICKER = "REMOVE_TICKER";
 
-    socket.on("disconnect", () => {  socket.connect();  });
+export const FETCH_TICKERS = "FETCH_TICKERS";
 
-    socket.on("ticker", function(data) {
-      console.log(data[0]);
-    });
+const reducer = (state = defaultState, action) => {
+  switch(action.type) {
 
+    case ADD_TICKER: {
+      return {...state, tickers: [...state.tickers, action.payload] }
+    }
+    case ADD_MANY_TICKERS: {
+      return {...state, tickers: [...state.tickers, ...action.payload] }
+    }
+    case REMOVE_TICKER: {
+      return {...state, tickers: state.tickers.filter(ticker => ticker !== action.payload ) }
+    }
+    default:
+      return state;
   }
+}
 
-export default makeShit;
+export const addTickerAction = (payload) => ({type: ADD_TICKER, payload});
+export const addManyTickersAction = (payload) => ({type: ADD_MANY_TICKERS, payload});
+export const fetchTickersAction = () => ({type: FETCH_TICKERS});
+
+const composedEnchancer = compose(composeWithDevTools(), applyMiddleware(sagaMiddleware))
+
+export const store = createStore(reducer, undefined, composedEnchancer);
+
+sagaMiddleware.run(addManyTickersWatcher);

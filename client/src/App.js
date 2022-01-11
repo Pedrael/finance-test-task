@@ -1,29 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
 
 import React from 'react';
 import Ticker from './ticker/Ticker';
-import makeShit from './store/index';
+
+import {useDispatch, useSelector} from "react-redux";
+import {addTickerAction} from './store/index';
 
 function App() {
+
+  const dispatch = useDispatch();
+  const tickers = useSelector(state => state.tickers);
+
+  const addTicker = () => {
+    //dispatch({type: "ADD_TICKER", payload: {name: "Pedrael"} });
+    dispatch(addTickerAction({name: "Pedrael"}));
+  }
+
+  //addTicker();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Ticker name = {"Pedrael"}/>
-      {makeShit()}
+      <button onClick={() => addTicker()}>ADD</button>
+      {
+        tickers.length > 0 ?
+        <Ticker name = {"Pedrael"}/>
+        :
+        <div>Empty</div>
+      }
     </div>
   );
 }
