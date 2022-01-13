@@ -29,16 +29,15 @@ const reducer = (state = defaultState, action) => {
     case REMOVE_TICKER: {
       return {...state, tickers: state.tickers.filter(ticker => ticker !== action.payload ) }
     }
+    default: return state;
   }
-
-  return state;
 }
 
 export const addTickerAction = (payload) => ({type: ADD_TICKER, payload});
 export const addManyTickersAction = (payload) => ({type: ADD_MANY_TICKERS, payload});
 export const fetchTickersAction = () => ({type: FETCH_TICKERS}); // For saga
 
-//const composedEnchancer = compose(composeWithDevTools(), applyMiddleware(sagaMiddleware));
-// LOL, IT CRASHES SAGAS :D
-export const store = createStore(reducer, undefined, applyMiddleware(sagaMiddleware));
+const composedEnchancer = compose(applyMiddleware(sagaMiddleware), composeWithDevTools());
+// applyMiddleware should be first otherwise sagas won`t work
+export const store = createStore(reducer, undefined, composedEnchancer);
 sagaMiddleware.run(rootSaga);
