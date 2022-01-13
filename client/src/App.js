@@ -4,7 +4,7 @@ import React from 'react';
 import Ticker from './ticker/Ticker';
 
 import {useDispatch, useSelector} from "react-redux";
-import {addTickerAction} from './store/index';
+import {fetchTickersAction} from './store/index';
 
 function App() {
 
@@ -12,11 +12,8 @@ function App() {
   const tickers = useSelector(state => state.tickers);
 
   const addTicker = () => {
-    //dispatch({type: "ADD_TICKER", payload: {name: "Pedrael"} });
-    dispatch(addTickerAction({name: "Pedrael"}));
+    dispatch(fetchTickersAction()); // Start pulling data
   }
-
-  //addTicker();
 
   return (
     <div className="App">

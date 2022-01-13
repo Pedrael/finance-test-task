@@ -1,21 +1,46 @@
 import { io } from "socket.io-client";
-import { put, takeEvery, call } from "redux-saga/effects";
+import { put, take, takeLatest, all, call } from "redux-saga/effects";
+import { eventChannel, END } from 'redux-saga';
 import { addManyTickersAction, FETCH_TICKERS } from "../store/index";
 
-const socket = io("http://localhost:4000/");
+const receiveMessage = (socket) => {
 
-socket.emit("start", () => {});
+  socket.on("disconnect", () => {
+    socket.connect();
+    console.log("socket disconnected");
+  });
 
-socket.on("disconnect", () => {  socket.connect();  });
+  return eventChannel((emitter) => {
+    socket.on("ticker", function(data) {
+      emitter(data);
+      console.log("DATA:", data);
+    });
 
-function* addManyTickersWorker() {
-
-  socket.on("ticker", function(data) {
-    yield call(data);
-  }); // TODO find out how to socket this
-  yield put(addManyTickersAction(data));
+    return () => { emitter(END); }
+  });
 }
 
-export function* addManyTickersWatcher() {
-  yield takeEvery(FETCH_TICKERS, addManyTickersWorker);
+function* addManyTickersWorker() {
+  const socket = io("http://localhost:4000/");
+  socket.emit("start", () => {});
+  const channel = yield call(receiveMessage, socket);
+  while(true) {
+    try {
+      const value = yield take(channel);
+      yield put(addManyTickersAction(value));
+    }
+    catch(error) {
+      console.error("socket error:", error);
+    }
+  }
+}
+
+function* addManyTickersWatcher() {
+  yield takeLatest(FETCH_TICKERS, addManyTickersWorker);
+}
+
+export function* rootSaga() {
+  yield all([
+    addManyTickersWatcher(),
+  ]);
 }
