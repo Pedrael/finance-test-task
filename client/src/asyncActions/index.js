@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import { put, take, takeLatest, all, call } from "redux-saga/effects";
 import { eventChannel, END } from 'redux-saga';
-import { addManyTickersAction, FETCH_TICKERS } from "../store/index";
+import { setTickerAction, FETCH_TICKERS } from "../store/index";
 
 const receiveMessage = (socket) => {
 
@@ -13,7 +13,7 @@ const receiveMessage = (socket) => {
   return eventChannel((emitter) => {
     socket.on("ticker", function(data) {
       emitter(data);
-      console.log("DATA:", data);
+      //console.log("DATA:", data);
     });
 
     return () => { emitter(END); }
@@ -27,7 +27,8 @@ function* addManyTickersWorker() {
   while(true) {
     try {
       const value = yield take(channel);
-      yield put(addManyTickersAction(value));
+      //yield put(addTickerAction(value));
+      yield put(setTickerAction(value));
     }
     catch(error) {
       console.error("socket error:", error);

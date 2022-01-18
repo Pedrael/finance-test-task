@@ -1,29 +1,22 @@
 import './App.css';
 
-import React from 'react';
-import Ticker from './ticker/Ticker';
+import React, {useEffect} from 'react';
 
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {fetchTickersAction} from './store/index';
+import TickersList from './tickersList/TickersList';
 
 function App() {
 
   const dispatch = useDispatch();
-  const tickers = useSelector(state => state.tickers);
 
-  const addTicker = () => {
-    dispatch(fetchTickersAction()); // Start pulling data
-  }
+  useEffect(() => {
+    dispatch(fetchTickersAction());
+  });
 
   return (
     <div className="App">
-      <button onClick={() => addTicker()}>ADD</button>
-      {
-        tickers.length > 0 ?
-        <Ticker name = {"Pedrael"}/>
-        :
-        <div>Empty</div>
-      }
+      <TickersList />
     </div>
   );
 }

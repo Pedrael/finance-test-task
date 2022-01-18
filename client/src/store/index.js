@@ -8,12 +8,13 @@ import {rootSaga} from "../asyncActions/index";
 const sagaMiddleware = createSagaMiddleware();
 
 const defaultState = {
-  tickers: []
+  tickers: [],
+  oldValue: [],
+  newValue: [],
 }
 
 const ADD_TICKER = "ADD_TICKER";
-const ADD_MANY_TICKERS = "ADD_MANY_TICKERS";
-const REMOVE_TICKER = "REMOVE_TICKER";
+const SET_TICKER = "SET_TICKER";
 
 export const FETCH_TICKERS = "FETCH_TICKERS"; // Action type for saga
 
@@ -21,20 +22,20 @@ const reducer = (state = defaultState, action) => {
   switch(action.type) {
 
     case ADD_TICKER: {
-      return {...state, tickers: [...state.tickers, action.payload] }
+      return {...state, tickers: [...state.tickers, [...action.payload] ] }
     }
-    case ADD_MANY_TICKERS: {
-      return {...state, tickers: [...state.tickers, ...action.payload] }
+    case SET_TICKER: {
+      return {...state, oldValue: [...state.newValue], newValue: [...action.payload] }
     }
-    case REMOVE_TICKER: {
-      return {...state, tickers: state.tickers.filter(ticker => ticker !== action.payload ) }
-    }
+
+
     default: return state;
   }
 }
 
 export const addTickerAction = (payload) => ({type: ADD_TICKER, payload});
-export const addManyTickersAction = (payload) => ({type: ADD_MANY_TICKERS, payload});
+export const setTickerAction = (payload) => ({type: SET_TICKER, payload});
+
 export const fetchTickersAction = () => ({type: FETCH_TICKERS}); // For saga
 
 const composedEnchancer = compose(applyMiddleware(sagaMiddleware), composeWithDevTools());
