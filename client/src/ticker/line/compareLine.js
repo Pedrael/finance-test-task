@@ -13,3 +13,5 @@ const compareLine = (oldValue = {}, newValue = {}) => {
 }
 
 export default compareLine;
+
+// compares 2 lines of old and new data, returning array of strings according to values

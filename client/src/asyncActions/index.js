@@ -3,7 +3,7 @@ import { put, take, takeLatest, all, call } from "redux-saga/effects";
 import { eventChannel, END } from 'redux-saga';
 import { setTickerAction, FETCH_TICKERS } from "../store/index";
 
-const receiveMessage = (socket) => {
+const receiveMessage = (socket) => { // get data using socket.io
 
   socket.on("disconnect", () => {
     socket.connect();

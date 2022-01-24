@@ -6,14 +6,17 @@ const Ticker = (props) => { // one partition of data visualised as table
 
   const current = props.current;
   const prev = props.prev;
+  const isVisible = props.isVisible; // array of bools
 
   return (
     <table className="tickerTable">
       <thead>
-        { <Line current={current[0]} headonly={true} /> }
+        { <Line current={current[0]} headonly={true} /> } // render title
       </thead>
       <tbody>
-        {current.map((item, id) => <Line current={item} prev={prev[id]} headonly={false} key={id} />)}
+        {current.map((item, id) => // render data
+          isVisible[id] ? <Line current={item} prev={prev[id]} headonly={false} key={id} /> : undefined
+        )}
       </tbody>
     </table>
   )
