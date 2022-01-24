@@ -42,8 +42,8 @@ test ('Empty CompareLine', () => {
   expect(compareLine()).toEqual(["", "", "", "", "", "", "", ""]);
 });
 
-test ('Not Equal Arrays CompareLine', () => {
-  expect(compareLine(test1, [{}])).toEqual(["", "", "", "", "", "", "", ""]);
+test ('Not Equal Length of Input Objects CompareLine', () => {
+  expect(compareLine(test1, {test: 'test'})).toEqual(["", "", "", "", "", "", "", ""]);
 });
 
 test ('Typical CompareLine Length', () => {
