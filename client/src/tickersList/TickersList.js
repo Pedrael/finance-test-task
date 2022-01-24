@@ -33,7 +33,7 @@ const TickersList = () => {
       }
       <div className="checkBoxes">{
         currentTicker.map((ticker, id) =>(
-          <div key={id} className="checkItem"> // checkboxes for hiding tickers
+          <div key={id} className="checkItem">
             <input
               type="checkbox"
               onChange={() => handleChange(id)}

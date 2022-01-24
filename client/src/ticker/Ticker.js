@@ -11,7 +11,7 @@ const Ticker = (props) => { // one partition of data visualised as table
   return (
     <table className="tickerTable">
       <thead>
-        { <Line current={current[0]} headonly={true} /> } // render title
+        { <Line current={current[0]} headonly={true} /> }
       </thead>
       <tbody>
         {current.map((item, id) => // render data
