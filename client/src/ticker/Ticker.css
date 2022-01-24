@@ -1,11 +1,11 @@
 .tickerTable {
-  border: 1px solid black;
+  border: 1px solid #2a2a2e;
   border-collapse: collapse;
   width: 100%;
 }
 
 .tickerTable td, .tickerTable th {
-  border: 1px solid #ddd;
+  border: 1px solid #2a2a2e;
   padding: 8px;
   cursor: pointer;
 }
@@ -20,6 +20,10 @@
   background-color: #f2f2f2;
 }
 
-.tickerTable tr:hover {
-  background-color: #ddd;
+.tickerTable .redCell {
+  background: #ff6a6a;
+}
+
+.tickerTable .greenCell {
+  background: #6eff6e;
 }

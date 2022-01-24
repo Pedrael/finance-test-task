@@ -11,15 +11,9 @@ const TickersList = () => {
     <div>
       {
         currentTicker.length > 0 ?
-        <Ticker payload={currentTicker} />
+        <Ticker current={currentTicker} prev={oldTicker}/>
         :
         <h1>No data</h1>
-      }
-      {
-        oldTicker.length > 0 ?
-        <Ticker payload={oldTicker} />
-        :
-        undefined
       }
     </div>
   )
